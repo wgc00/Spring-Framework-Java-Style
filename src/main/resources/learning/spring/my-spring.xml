@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    <!--xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
+
+
+    <bean id="bs" class="spring.xml.ServiceImpl"/>
+
+
+    <bean id="sheep" class="spring.xml.entity.Sheep">
+        <!--第一种属性注入值-->
+        <!-- <property name="name" value="多利"/>
+         <property name="type" value="白种"/>-->
+
+        <!--第二中通过构造函数注入值-->
+        <constructor-arg index="0" value="伊利"/>
+        <constructor-arg index="1" value="黑白"/>
+    </bean>
+
+    <bean id="cat" class="spring.xml.entity.Cat">
+        <property name="type">
+            <!--list集合注入-->
+            <!-- map/arrary/set/prop 同理 -->
+            <list>
+                <value>黑白</value>
+                <value>黄白</value>
+                <value>纯白</value>
+                <value>纯黑</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--Bean中的对象与对象的关系依赖-->
+    <bean id="img" class="spring.xml.entity.Image">
+        <property name="img" value="ddd"/>
+        <!--使用ref进行依赖关系-->
+        <property name="tiger" ref="tiger"/>
+    </bean>
+    <bean id="tiger" class="spring.xml.entity.Tiger">
+        <property name="photo">
+            <!--使用ref进行依赖关系-->
+            <ref bean="img"></ref>
+        </property>
+    </bean>
+
+
+    <!-- 命名空间 -->
+    <!--
+        xmlns:context="http://www.springframework.org/schema/context"再开头把context这句复制一份
+        修改为下面这句：
+        xmlns:p="http://www.springframework.org/schema/p"
+        要使用集合在添加一句：
+        xmlns:util="http://www.springframework.org/schema/util"
+    -->
+    <!--抽取出来，可以重复使用-->
+    <util:list id="rabbits">
+        <value>ff</value>
+        <value>dd</value>
+    </util:list>
+
+    <bean class="spring.xml.entity.Rabbit" p:name="小兔">
+        <property name="type">
+            <ref bean="rabbits"></ref>
+        </property>
+    </bean>
+
+
+</beans>

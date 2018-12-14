@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wgc.persons.dao.PersonsMapper">
+  <resultMap id="BaseResultMap" type="com.wgc.persons.entity.Persons">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="baborage" jdbcType="DECIMAL" property="baborage" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from persons
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wgc.persons.entity.Persons">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into persons (id, name, birthday, 
+      city, age, baborage
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{city,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{baborage,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wgc.persons.entity.Persons">
+    update persons
+    set name = #{name,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      city = #{city,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      baborage = #{baborage,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, birthday, city, age, baborage
+    from persons
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, birthday, city, age, baborage
+    from persons
+  </select>
+</mapper>
